@@ -25,6 +25,7 @@ Installation
 ============
 Setting up the engine involves modifying the theme.js file to use the caramel-view-engine.
 
+**theme.js:**
 ```javascript
   var caramelViewEngine=require('caramel-view-engine').engine;
   var engine=caramelViewEngine;
@@ -32,14 +33,12 @@ Setting up the engine involves modifying the theme.js file to use the caramel-vi
 
 The above snippet of code will get you started with the engine to render html. 
 
-theme.js:
+**myFirstRoute.js:**
 ```javascript
   var user={
     name:'Sam',
     age:99
   };
-  
-  
   
   user.__viewId='myFirstView';
   
