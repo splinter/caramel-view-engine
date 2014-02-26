@@ -1,7 +1,9 @@
 caramel-view-engine
 ===================
 
-A generic view based engine for Caramel
+A generic view based engine for Caramel.
+
+It is heavily inspired by the Caramel Handlebars engine, and burrows many of the concepts introduced by that engine. As a result, someon familiar with that engine will feel right at home using this module. 
 
 Contents
 ========
@@ -18,6 +20,36 @@ Contents
 Introduction
 ============
 Why do we need another Caramel engine? This is not a replacement for the existing Caramel Handlebars engine, but rather an engine built to cater routes.
+
+Installation
+============
+Setting up the engine involves modifying the theme.js file to use the caramel-view-engine.
+
+```javascript
+  var caramelViewEngine=require('caramel-view-engine').engine;
+  var engine=caramelViewEngine;
+```
+
+The above snippet of code will get you started with the engine to render html. 
+
+```javascript
+  var user={
+    name:'Sam',
+    age:99
+  };
+  
+  
+  
+  user.__viewId='myFirstView';
+  
+  caramel.render(data);
+```
+
+ 
+
+Caching
+=======
+
 
 
 Building a theme
