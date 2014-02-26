@@ -32,6 +32,7 @@ Setting up the engine involves modifying the theme.js file to use the caramel-vi
 
 The above snippet of code will get you started with the engine to render html. 
 
+theme.js:
 ```javascript
   var user={
     name:'Sam',
