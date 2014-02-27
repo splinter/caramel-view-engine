@@ -31,7 +31,8 @@ Setting up the engine involves modifying the theme.js file to use the caramel-vi
   var engine=caramelViewEngine;
 ```
 
-The above snippet of code will get you started with the engine to render html. 
+Usage
+=====
 
 **myFirstRoute.js:**
 ```javascript
@@ -45,26 +46,67 @@ The above snippet of code will get you started with the engine to render html.
   caramel.render(data);
 ```
 
+
  
 
 Caching
 =======
 
+How does the engine  work?
+================
 
+1. A controller or route will call caramel.render( [ some data , viewId] ) in order to handle a request
+2. The caramel core will look for a theme.js file in the active theme and use the registered engine
+3. At this point the caramel core will give control over to the caramel view engine
+
+(Note: The next steps assume that caching has been disabled)
+
+4. The caramel view engine will inspect the partials directory and register them with an internal reference to the Handlebars engine
+5. It will then inspect the handlebars helpers directory to and load any defined helpers (Refer to sample)
+6. After this initializing logic is completed the actual data object will be checked to see if the user has provided a viewId
+7. If a viewId is not provided or a view cannot be found , the data will be rendered as a json object
+8. However, if a viewId is provided then the render method defined in the view file is invoked with a reference to the data and a theme function
+9. When and if the user calls the theme method, he or she is expected to pass in the page used to render the response
+10. The theme method will internally invoke an registed plug-ins. The actual rendering operation is deferred to a plug-in as is the case with the compiled-output-plugin
 
 Building a theme
 ================
-A theme built for the caramel view engine should have a specific structure:
+The caramel-view engine expects a theme to have a few key folders;
 
 1. pages
 2. partials
 3. helpers
 4. handlebars-helpers 
-5. plug-ins
+5. public
+6. plug-ins
+7. views
+
+###Pages
+All pages in which partials are rendered need to be dropped into this folder
+
+###Partials
+The partials folder should be used to store Handlebars template files defining a particular area of a view. 
+
+**Note**You are encouraged to organize the partials into a meaningfull order such as the grouping the sample application. The engine will crawl all sub folders in the directory.
 
 
-Parts of the engine
-===================
+###Helpers
+The Helpers directory allows a convenient point to define all js and css files required by a particular partial file.
+
+**Warning**: 
+
+###Handlebars Helpers
+The engine allows theme developers to specify their own Handlebars helper methods.
+
+**Note**: You are encouraged to organize the partials into a meaningfull order such as the grouping the sample application. The engine will crawl all sub folders in the directory.
+
+###Plug-ins
+You should drop any plug-ins that you use with the theme in this directory.
+
+###Public 
+The Public folder should be used to store any resources consumed by the clients.This includes all client side js and css files. 
+
+
 
 Plug-ins
 ========
