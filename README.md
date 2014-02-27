@@ -96,7 +96,26 @@ The Helpers directory allows a convenient point to define all js and css files r
 **Warning**: 
 
 ###Handlebars Helpers
-The engine allows theme developers to specify their own Handlebars helper methods.
+The engine allows theme developers to specify their own Handlebars helper methods.In order to define a helper organize your code as follows in your script file:
+
+```javascript
+
+  var helpers=(function(){
+    
+      //Your helper logic 
+      var myHelper=function(){
+      };
+      
+      
+      return {
+        myHelper:myHelper
+      }
+      
+  }());
+  
+```
+The engine will load any file in the handlebars-helper directory and then automatically register any exposed methods in the helper object.The above helper can be invoked by calling {{myHelper }}.
+
 
 **Note**: You are encouraged to organize the partials into a meaningfull order such as the grouping the sample application. The engine will crawl all sub folders in the directory.
 
@@ -110,7 +129,7 @@ The Public folder should be used to store any resources consumed by the clients.
 
 Plug-ins
 ========
-Plug-ins allows the rendering of view to be extended using custom logic.In fact, if you look at the sample app , you will notice that the rendering of the page is handled by a plug-in.
+Plug-ins allows the rendering of views to be extended using custom logic.In fact, if you look at the sample app , you will notice that the rendering of pages is handled by a plug-in.
 
 Writing your own Plug-in
 ========================
