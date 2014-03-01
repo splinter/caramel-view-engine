@@ -1,0 +1,18 @@
+<module name="caramel-view-engine" xmlns="http://wso2.org/projects/jaggery/module.xml">
+    <script>
+        <name>caramel-view-engine</name>
+        <path>scripts/engine/engine.js</path>
+    </script>
+    <script>
+        <name>default-helpers</name>
+        <path>scripts/handle-bars-helpers/default-helpers.js</path>
+    </script>
+    <script>
+        <name>caramel-resources</name>
+        <path>scripts/plugins/caramel-resources.js</path>
+    </script>
+    <script>
+        <name>compiled-output-plugin</name>
+        <path>scripts/plugins/compiled-output-plugin.js</path>
+    </script>
+</module>
