@@ -20,6 +20,8 @@ Why do we need another Caramel engine? This is not a replacement for the existin
 
 Installation
 ============
+Drop the caramel-view-engine folder in the modules folder of your Jaggery server.
+
 Setting up the engine involves modifying the theme.js file to use the caramel-view-engine.
 
 **theme.js:**
