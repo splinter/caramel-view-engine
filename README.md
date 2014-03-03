@@ -8,14 +8,11 @@ It is heavily inspired by the Caramel Handlebars engine, and burrows many of the
 Contents
 ========
 1. Introduction
-2. Building a theme
-2. Parts of the engine
-3. How is a page rendered?
-4. Partials
-5. Helpers
-6. Handlebars Helpers
-7. Plug-ins
-8. Writing your own Plug-in
+2. Usage
+3. How does the engine work?
+4. Building a theme
+5. Plug-ins
+6. Writing your own Plug-in
 
 Introduction
 ============
@@ -47,13 +44,8 @@ Usage
 ```
 
 
- 
-
-Caching
-=======
-
 How does the engine  work?
-================
+=========================
 
 1. A controller or route will call caramel.render( [ some data , viewId] ) in order to handle a request
 2. The caramel core will look for a theme.js file in the active theme and use the registered engine
