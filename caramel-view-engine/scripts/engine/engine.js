@@ -40,6 +40,7 @@ var engine = (function () {
      * The function is called when the engine is initialized by the Caramel core
      */
     var init = function () {
+        loadDefaultPlugins();
         this.partials(Handlebars);
     };
 
@@ -53,9 +54,13 @@ var engine = (function () {
      * a set of default plugins are added.
      */
     var loadDefaultPlugins = function () {
+        log.info('Loading a set of default plug-ins as the user has not added any');
         if (plugins.length == 0) {
             //Install the default plugins
+
+            log.info('Adding compileResources plugin');
             use(compileResources);
+            log.info('Adding compileOutput plugin');
             use(compileOutput)
         }
     };
@@ -63,11 +68,12 @@ var engine = (function () {
     /**
      * The function loads up the default Handlebars helpers
      */
-    var loadDefaultHandlebarsHelpers=function(){
-        var handlebarsHelpers=helpers(Handlebars);
+    var loadDefaultHandlebarsHelpers = function () {
+        log.info('Loading default helpers');
+        var handlebarsHelpers = helpers(Handlebars);
         for (var key in handlebarsHelpers) {
             log.info('Registering helper: ' + key);
-            HandleBars.registerHelper(key, module[key]);
+            Handlebars.registerHelper(key, handlebarsHelpers[key]);
         }
     };
 
@@ -157,12 +163,19 @@ var engine = (function () {
     var loadHandlebarsHelpers = function (dir, handleBars) {
         var base = getPath(dir);//'/themes/default/' + dir;
         var dir = new File(base);
+
+
         log.info('Registering helpers');
         handleBars._getPublicDir = getPublicDir;
         handleBars._translate = translate;
 
         //Load the default Handlebars helpers
         loadDefaultHandlebarsHelpers();
+
+        if(!dir.isExists()){
+            log.warn('Could not locate '+dir.getName()+'.Not loading user defined Handlebars helpers.');
+            return;
+        }
 
         recursiveRegister(dir, function (file) {
 
@@ -182,6 +195,13 @@ var engine = (function () {
     var loadHandlebarsPartials = function (dir, handleBars) {
         var base = getPath(dir);//'/themes/default/' + dir;
         var dir = new File(base);
+
+        if(!dir.isExists()){
+            log.warn('Could not locate '+dir.getName()+'.Not loading partials');
+            return;
+        }
+
+
         recursiveRegister(dir, function (file) {
             file.open('r');
             log.info('Registering partial file: ' + file.getName());
@@ -274,13 +294,22 @@ var engine = (function () {
             page: page,
             contexts: contexts,
             Handlebars: Handlebars
-        }
+        };
+
+        log.info('Plugins count: ' + plugins.length);
+
+        log.info('Starting processing plugins');
 
         //Call the process method of all plugins
         executePluginAction(plugins, 'process', params);
 
+        log.info('Starting output plugins');
+        log.info(plugins[1]);
+
         //Call the output method so that an appropriate plug-in will do the rendering
         executePluginAction(plugins, 'output', params, true);
+
+        log.info('Finished plugin operations');
     };
 
     /**
@@ -300,7 +329,7 @@ var engine = (function () {
 
 
         for (var index in plugins) {
-
+            log.info('Using plugin '+index);
             plugin = plugins[index];
 
             var usePlugin = true; //We assume all plug-ins can be used
@@ -313,6 +342,7 @@ var engine = (function () {
 
             //Call the action provided the action exists and the plugin can be used
             if ((usePlugin) && (plugin[action])) {
+                log.info(plugin[action]);
                 plugin[action](page, contexts, meta, Handlebars);
             }
         }

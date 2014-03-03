@@ -4,8 +4,10 @@
 var compileOutput={};
 
 (function(){
+    var log=new Log('compiled-output-plugin');
 
     var check=function(){
+        log.info('Checking if compiledOutputPlugin can be used.');
         //Check the request to see if the application/html content-type header has been seen
         return true;
     };
@@ -47,6 +49,7 @@ var compileOutput={};
      * @param Handlebars
      */
     var output=function(page,contexts,meta,Handlebars){
+        log.info('Called output');
         var pagePath=getPagePath(page);
         var pageContent=getPageContent(pagePath);
 
@@ -58,5 +61,6 @@ var compileOutput={};
     };
 
     compileOutput.output=output;
+    compileOutput.check=check;
 
 }());
