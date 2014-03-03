@@ -8,8 +8,8 @@
         <path>scripts/handle-bars-helpers/default-helpers.js</path>
     </script>
     <script>
-        <name>caramel-resources</name>
-        <path>scripts/plugins/caramel-resources.js</path>
+        <name>compile-resources</name>
+        <path>scripts/plugins/compile-resources.js</path>
     </script>
     <script>
         <name>compiled-output-plugin</name>

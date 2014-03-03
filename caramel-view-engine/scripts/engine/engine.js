@@ -33,7 +33,7 @@ var engine = (function () {
     var CSS_DIR = 'public/css';
     var IMAGES_DIR = 'public/images';
     var PUBLIC_DIR = 'public/';
-    var TRANSLATION_FILE='/shared/i18n';
+    var TRANSLATION_FILE = '/shared/i18n';
     var plugins = [];
 
     /**
@@ -46,6 +46,29 @@ var engine = (function () {
     var partials = function () {
         loadHandlebarsHelpers(HELPER_DIR, Handlebars);
         loadHandlebarsPartials(PARTIAL_DIR, Handlebars);
+    };
+
+    /**
+     * The function checks whether default plug-ins have been registered if not
+     * a set of default plugins are added.
+     */
+    var loadDefaultPlugins = function () {
+        if (plugins.length == 0) {
+            //Install the default plugins
+            use(compileResources);
+            use(compileOutput)
+        }
+    };
+
+    /**
+     * The function loads up the default Handlebars helpers
+     */
+    var loadDefaultHandlebarsHelpers=function(){
+        var handlebarsHelpers=helpers(Handlebars);
+        for (var key in handlebarsHelpers) {
+            log.info('Registering helper: ' + key);
+            HandleBars.registerHelper(key, module[key]);
+        }
     };
 
     /**
@@ -79,7 +102,7 @@ var engine = (function () {
 
     var getPublicDir = function () {
         return PUBLIC_DIR;
-    }
+    };
 
     /**
      * The function returns the name of the provided file without the extension
@@ -137,6 +160,10 @@ var engine = (function () {
         log.info('Registering helpers');
         handleBars._getPublicDir = getPublicDir;
         handleBars._translate = translate;
+
+        //Load the default Handlebars helpers
+        loadDefaultHandlebarsHelpers();
+
         recursiveRegister(dir, function (file) {
 
             var helper = base + '/' + file.getName();
