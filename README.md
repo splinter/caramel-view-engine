@@ -3,7 +3,7 @@ caramel-view-engine
 
 A generic view based engine for Caramel.
 
-It is heavily inspired by the Caramel Handlebars engine, and burrows many of the concepts introduced by that engine. As a result, someon familiar with that engine will feel right at home using this module. 
+It is heavily inspired by the Caramel Handlebars engine, and burrows many of the concepts introduced by that engine. As a result, anyone familiar with that engine will feel right at home using this module. 
 
 Contents
 ========
@@ -27,6 +27,10 @@ Setting up the engine involves modifying the theme.js file to use the caramel-vi
   var caramelViewEngine=require('caramel-view-engine').engine;
   var engine=caramelViewEngine;
 ```
+
+At this point , you can customize the rendering process by adding plugins. We will be discussing more about plug-ins in a section further down the line, but for now keep in my mind that you have the freedom to attach plug-ins at this point.
+
+IMPORTANT: If you do not specify any plugins the engine will install two default plug-ins in order to cater requests.
 
 Usage
 =====
@@ -74,18 +78,18 @@ The caramel-view engine expects a theme to have a few key folders;
 7. views
 
 ###Pages
-All pages in which partials are rendered need to be dropped into this folder
+All pages in which partials are rendered need to be dropped into this folder.
 
 ###Partials
 The partials folder should be used to store Handlebars template files defining a particular area of a view. 
 
-**Note**You are encouraged to organize the partials into a meaningfull order such as the grouping the sample application. The engine will crawl all sub folders in the directory.
+**Note**You are encouraged to organize the partials into a meaningfull order such as the grouping in the sample application. The engine will crawl all sub folders in the directory.
 
 
 ###Helpers
-The Helpers directory allows a convenient point to define all js and css files required by a particular partial file.
+The Helpers directory allows a convenient point to define all js and css files required by a particular partial file.A helper file is means by which all resources required by a partial can be defined by the user. 
 
-**Warning**: 
+**WARNING** At the time of this writing, the engine will NOT crawl all folders in the directory, so please make sure that the name you have given the helper matches that of the partial.
 
 ###Handlebars Helpers
 The engine allows theme developers to specify their own Handlebars helper methods.In order to define a helper organize your code as follows in your script file:
@@ -118,14 +122,13 @@ You should drop any plug-ins that you use with the theme in this directory.
 The Public folder should be used to store any resources consumed by the clients.This includes all client side js and css files. 
 
 
-
 Plug-ins
 ========
 Plug-ins allows the rendering of views to be extended using custom logic.In fact, if you look at the sample app , you will notice that the rendering of pages is handled by a plug-in.
 
 Writing your own Plug-in
 ========================
-The rendering operations of the engine can be extended through the use of plug-ins.A plug-in can be created by exposing a set of predefined methods ( check, output and process).When handling a request, an engine will go through two stages; processing and output.The processing stage is used to handle tasks such as gathering all javascript files in a view, while the output stage is responsible for serving some html content to the user.
+A plug-in can be created by exposing a set of predefined methods ( check, output and process).When handling a request, an engine will go through two stages; processing and output.The processing stage is used to handle tasks such as gathering all javascript files in a view, while the output stage is responsible for serving some html content to the user.
 
 As an example we will define a simple plug-in which is invoked during the processing stage;
 
