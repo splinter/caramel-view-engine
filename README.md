@@ -133,5 +133,20 @@ Plug-ins allows the rendering of views to be extended using custom logic.In fact
 
 Writing your own Plug-in
 ========================
+The rendering operations of the engine can be extended through the use of plug-ins.A plug-in can be created by exposing a set of predefined methods ( check, output and process).When handling a request, an engine will go through two stages; processing and output.The processing stage is used to handle tasks such as gathering all javascript files in a view, while the output stage is responsible for serving some html content to the user.
 
+As an example we will define a simple plug-in which is invoked during the processing stage;
 
+myLogger.js:
+
+```javascript
+var myLogger={};
+
+var module=(function(){
+
+   myLogger.output=function(page, contexts, meta, Handlebars){
+        
+   };
+   
+}());
+```
