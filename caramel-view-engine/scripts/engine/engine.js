@@ -172,8 +172,8 @@ var engine = (function () {
         //Load the default Handlebars helpers
         loadDefaultHandlebarsHelpers();
 
-        if(!dir.isExists()){
-            log.warn('Could not locate '+dir.getName()+'.Not loading user defined Handlebars helpers.');
+        if (!dir.isExists()) {
+            log.warn('Could not locate ' + dir.getName() + '.Not loading user defined Handlebars helpers.');
             return;
         }
 
@@ -196,8 +196,8 @@ var engine = (function () {
         var base = getPath(dir);//'/themes/default/' + dir;
         var dir = new File(base);
 
-        if(!dir.isExists()){
-            log.warn('Could not locate '+dir.getName()+'.Not loading partials');
+        if (!dir.isExists()) {
+            log.warn('Could not locate ' + dir.getName() + '.Not loading partials');
             return;
         }
 
@@ -225,8 +225,8 @@ var engine = (function () {
 
         //There is no viewId
         if (viewId == '') {
-            //Render an error page
-            print('Error ! Error ! No viewId has been specified');
+            log.info('Viewless rendering');
+            viewlessTheme(data);
             return;
         }
         var path = dir + '/' + viewId + '.js';
@@ -313,6 +313,21 @@ var engine = (function () {
     };
 
     /**
+     * The function is used to build dynamic views
+     * @param data
+     */
+    var viewlessTheme = function (data) {
+        var params = {
+            data: data,
+            handlebars: Handlebars
+        };
+
+        executePluginAction(plugins, 'process', params);
+
+        executePluginAction(plugins, 'output', params);
+    };
+
+    /**
      * The function executes the request plugin action on all of the
      * registered plugins
      * @param plugins
@@ -329,21 +344,25 @@ var engine = (function () {
 
 
         for (var index in plugins) {
-            log.info('Using plugin '+index);
+            log.info('Using plugin ' + index);
             plugin = plugins[index];
 
             var usePlugin = true; //We assume all plug-ins can be used
 
             //Check if the plugin can be run
             if (check) {
+                log.info('Before use check');
                 usePlugin = (plugin.check) ? plugin.check(meta.request) : false;
-
+                log.info('Use plugin check'+usePlugin);
             }
+
+            log.info(stringify(plugin));
+            log.info(plugin[action]);
 
             //Call the action provided the action exists and the plugin can be used
             if ((usePlugin) && (plugin[action])) {
-                log.info(plugin[action]);
-                plugin[action](page, contexts, meta, Handlebars);
+                log.info('Running plugin');
+                plugin[action](params);
             }
         }
     };
@@ -353,6 +372,7 @@ var engine = (function () {
      * @param plugin The plugin to be installed
      */
     var use = function (plugin) {
+        log.info('Using plugin: '+plugin);
         plugins.push(plugin);
     };
 

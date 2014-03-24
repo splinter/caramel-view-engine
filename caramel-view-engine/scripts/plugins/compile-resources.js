@@ -8,7 +8,11 @@ var compileResources={};
 
 (function () {
 
-    var process = function (page, contexts, meta, Handlebars) {
+    var process = function (context) {
+        var page=context.page;
+        var contexts=context.contexts;
+        var meta=context.meta;
+        var Handlebars=context.Handlebars;
         var blocks;
         var block;
         var helper;

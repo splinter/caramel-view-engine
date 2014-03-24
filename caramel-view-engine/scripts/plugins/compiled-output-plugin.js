@@ -48,7 +48,11 @@ var compileOutput={};
      * @param meta
      * @param Handlebars
      */
-    var output=function(page,contexts,meta,Handlebars){
+    var output=function(context){
+        var page=context.page;
+        var contexts=context.contexts;
+        var meta=context.meta;
+        var Handlebars=context.Handlebars;
         log.info('Called output');
         var pagePath=getPagePath(page);
         var pageContent=getPageContent(pagePath);
