@@ -293,7 +293,7 @@ var engine = (function () {
         var params = {
             page: page,
             contexts: contexts,
-            Handlebars: Handlebars
+            handlebars: Handlebars
         };
 
         log.info('Plugins count: ' + plugins.length);

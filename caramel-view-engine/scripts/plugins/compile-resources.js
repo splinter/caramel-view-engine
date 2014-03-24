@@ -12,7 +12,7 @@ var compileResources={};
         var page=context.page;
         var contexts=context.contexts;
         var meta=context.meta;
-        var Handlebars=context.Handlebars;
+        var handlebars=context.handlebars;
         var blocks;
         var block;
         var helper;

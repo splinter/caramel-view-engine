@@ -52,7 +52,7 @@ var compileOutput={};
         var page=context.page;
         var contexts=context.contexts;
         var meta=context.meta;
-        var Handlebars=context.Handlebars;
+        var handlebars=context.handlebars;
         log.info('Called output');
         var pagePath=getPagePath(page);
         var pageContent=getPageContent(pagePath);
@@ -60,7 +60,7 @@ var compileOutput={};
         log.info('Meta: ');
         log.info(stringify(caramel.meta().js));
 
-        var compiledPage=Handlebars.compile(pageContent);
+        var compiledPage=handlebars.compile(pageContent);
         print(compiledPage(contexts));
     };
 
