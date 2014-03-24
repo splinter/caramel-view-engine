@@ -49,6 +49,17 @@ Usage
   caramel.render(data);
 ```
 
+The caramel-view-engine also supports a type of rendering called viewless model.If a data object is provided to the engine without a viewId property it will be processed in viewless mode.The engine should ONLY be operated strictly in either viewless mode or view mode.
+
+####Viewless
+The viewless mode was added to the engine to support rendering of fiber component chains[https://github.com/splinter/jaggery-fiber].
+
+The following plugins should be used when running the engine in viewless mode;
+
+1. component-partial-compiler
+2. component-page-compiler
+
+The plugins expect the pages and partials to be provided as file references.
 
 How does the engine  work?
 =========================
