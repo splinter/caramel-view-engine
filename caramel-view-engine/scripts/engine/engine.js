@@ -23,7 +23,7 @@
  */
 var engine = (function () {
 
-    var log = new Log('pipe-caramel-engine');
+    var log = new Log('caramel-view-engine');
     var Handlebars = require('handlebars').Handlebars;
     var PARTIAL_DIR = 'partials';
     var PAGES_DIR = 'pages';
@@ -54,8 +54,9 @@ var engine = (function () {
      * a set of default plugins are added.
      */
     var loadDefaultPlugins = function () {
-        log.info('Loading a set of default plug-ins as the user has not added any');
+
         if (plugins.length == 0) {
+        	log.warn('Loading a set of default plug-ins as the user has not added any');
             //Install the default plugins
 
             log.info('Adding compileResources plugin');
@@ -304,7 +305,7 @@ var engine = (function () {
         executePluginAction(plugins, 'process', params);
 
         log.info('Starting output plugins');
-        log.info(plugins[1]);
+        //log.info(plugins[1]);
 
         //Call the output method so that an appropriate plug-in will do the rendering
         executePluginAction(plugins, 'output', params, true);
@@ -344,7 +345,7 @@ var engine = (function () {
 
 
         for (var index in plugins) {
-            log.info('Using plugin ' + index);
+           
             plugin = plugins[index];
 
             var usePlugin = true; //We assume all plug-ins can be used
@@ -356,8 +357,6 @@ var engine = (function () {
                 log.info('Use plugin check'+usePlugin);
             }
 
-            log.info(stringify(plugin));
-            log.info(plugin[action]);
 
             //Call the action provided the action exists and the plugin can be used
             if ((usePlugin) && (plugin[action])) {
@@ -372,7 +371,6 @@ var engine = (function () {
      * @param plugin The plugin to be installed
      */
     var use = function (plugin) {
-        log.info('Using plugin: '+plugin);
         plugins.push(plugin);
     };
 
