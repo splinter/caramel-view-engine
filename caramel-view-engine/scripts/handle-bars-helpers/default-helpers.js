@@ -120,7 +120,7 @@ var helpers = function (Handlebars) {
             //remove \n when production = true
             //log.info(url('a'));
             //log.info(url.call(Handlebars._getPublicDir(js[i])));
-            html += '\n' + renderJS(url.call(theme, Handlebars._getPublicDir()+'js/' + js[i]));
+            html += '\n' + renderJS(url.call(theme, js[i]));
         }
         return new Handlebars.SafeString(html);
     };
@@ -139,7 +139,7 @@ var helpers = function (Handlebars) {
         }
         url = theme.url;
         for (i = 0; i < length; i++) {
-            html += renderCSS(url.call(theme,Handlebars._getPublicDir()+ 'css/' + css[i]));
+            html += renderCSS(url.call(theme,css[i]));
         }
         return new Handlebars.SafeString(html);
     };
