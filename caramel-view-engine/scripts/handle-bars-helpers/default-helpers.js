@@ -170,6 +170,17 @@ var helpers = function (Handlebars) {
         return caramel.url(path);
     };
 
+    var publicDir=function(path){
+        var log=new Log();
+        if (path.indexOf('http://') === 0 || path.indexOf('https://') === 0) {
+            return path;
+        }
+        var theme=caramel.theme();
+        var url=theme.url;
+        path='/public'+path;
+        return url.call(theme,path);   
+    };
+
     var themeUrl = function (path) {
         if (path.indexOf('http://') === 0 || path.indexOf('https://') === 0) {
             return path;
@@ -217,6 +228,7 @@ var helpers = function (Handlebars) {
         code: code,
         url: url,
         themeUrl: themeUrl,
+        publicDir:publicDir,
         t: t,
         json: json,
         cap: cap,
