@@ -130,6 +130,8 @@ var helpers = function (Handlebars) {
             html = '',
             theme = caramel.theme(),
             css = caramel.meta().css;
+        var log=new Log();
+        log.info('RENDERING CSS');
         if (!css) {
             return html;
         }
@@ -139,6 +141,7 @@ var helpers = function (Handlebars) {
         }
         url = theme.url;
         for (i = 0; i < length; i++) {
+            log.info('css'+url.call(theme,css[i]));
             html += renderCSS(url.call(theme,css[i]));
         }
         return new Handlebars.SafeString(html);
@@ -177,7 +180,7 @@ var helpers = function (Handlebars) {
         }
         var theme=caramel.theme();
         var url=theme.url;
-        path='/public'+path;
+        path=path;
         return url.call(theme,path);   
     };
 
