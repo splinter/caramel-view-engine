@@ -7,7 +7,7 @@ var compileOutput={};
     var log=new Log('compiled-output-plugin');
 
     var check=function(){
-        log.info('Checking if compiledOutputPlugin can be used.');
+        log.debug('Checking if compiledOutputPlugin can be used.');
         //Check the request to see if the application/html content-type header has been seen
         return true;
     };
@@ -53,13 +53,8 @@ var compileOutput={};
         var contexts=context.contexts;
         var meta=context.meta;
         var handlebars=context.handlebars;
-        log.info('Called output');
         var pagePath=getPagePath(page);
         var pageContent=getPageContent(pagePath);
-
-        log.info('Meta: ');
-        log.info(stringify(caramel.meta().js));
-
         var compiledPage=handlebars.compile(pageContent);
         print(compiledPage(contexts));
     };

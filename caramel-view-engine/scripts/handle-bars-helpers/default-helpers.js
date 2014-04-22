@@ -4,6 +4,8 @@
  */
 var helpers = function (Handlebars) {
 
+    var log = new Log();
+
     var renderData = function (data) {
         var template,
             context = typeof data.context === 'function' ? data.context() : data.context;
@@ -101,8 +103,8 @@ var helpers = function (Handlebars) {
     };
 
     var js = function () {
-        var log=new Log();
-        log.info('JS Helper called');
+        //var log=new Log();
+        //log.info('JS Helper called');
         var i, url, length,
             html = '',
             theme = caramel.theme(),
@@ -130,8 +132,8 @@ var helpers = function (Handlebars) {
             html = '',
             theme = caramel.theme(),
             css = caramel.meta().css;
-        var log=new Log();
-        log.info('RENDERING CSS');
+        //var log=new Log();
+        l//og.info('RENDERING CSS');
         if (!css) {
             return html;
         }

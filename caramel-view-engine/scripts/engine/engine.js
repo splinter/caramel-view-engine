@@ -28,7 +28,7 @@ var engine = (function () {
     var PARTIAL_DIR = 'partials';
     var PAGES_DIR = 'pages';
     var HELPER_DIR = 'handlebar-helpers';
-    var RENDERERS_DIR = 'renderers';
+    var RENDERERS_DIR = 'views';
     var JS_DIR = 'public/js';
     var CSS_DIR = 'public/css';
     var IMAGES_DIR = 'public/images';
@@ -59,9 +59,9 @@ var engine = (function () {
         	log.warn('Loading a set of default plug-ins as the user has not added any');
             //Install the default plugins
 
-            log.info('Adding compileResources plugin');
+            log.debug('Adding compileResources plugin');
             use(compileResources);
-            log.info('Adding compileOutput plugin');
+            log.debug('Adding compileOutput plugin');
             use(compileOutput)
         }
     };
@@ -70,10 +70,10 @@ var engine = (function () {
      * The function loads up the default Handlebars helpers
      */
     var loadDefaultHandlebarsHelpers = function () {
-        log.info('Loading default helpers');
+        log.debug('Loading default helpers');
         var handlebarsHelpers = helpers(Handlebars);
         for (var key in handlebarsHelpers) {
-            log.info('Registering helper: ' + key);
+            log.debug('Registering helper: ' + key);
             Handlebars.registerHelper(key, handlebarsHelpers[key]);
         }
     };
@@ -104,7 +104,7 @@ var engine = (function () {
     };
 
     var globals = function () {
-        log.info('Globals method called');
+        log.debug('Globals method called');
     };
 
     var getPublicDir = function () {
@@ -132,7 +132,7 @@ var engine = (function () {
      */
     var getPath = function (dir) {
         var path = caramel.theme().resolve(dir);
-        log.info('Path: ' + path);
+        log.debug('Path: ' + path);
         return path;
     };
 
@@ -166,7 +166,7 @@ var engine = (function () {
         var dir = new File(base);
 
 
-        log.info('Registering helpers');
+        log.debug('Registering helpers');
         handleBars._getPublicDir = getPublicDir;
         handleBars._translate = translate;
 
@@ -183,7 +183,7 @@ var engine = (function () {
             var helper = base + '/' + file.getName();
             var module = require(helper).helpers(handleBars);
             for (var key in module) {
-                log.info('Registering helper: ' + key);
+                log.debug('Registering helper: ' + key);
                 handleBars.registerHelper(key, module[key]);
             }
         });
@@ -205,7 +205,7 @@ var engine = (function () {
 
         recursiveRegister(dir, function (file) {
             file.open('r');
-            log.info('Registering partial file: ' + file.getName());
+            log.debug('Registering partial file: ' + file.getName());
             handleBars.registerPartial(getFileName(file), file.readAll());
             file.close();
         });
@@ -219,14 +219,14 @@ var engine = (function () {
      *             the request object (Refer: caramel.core.js)
      */
     var render = function (data, meta) {
-        log.info('Render method called');
+        log.debug('Render method called');
         var req = meta.request;
         var dir = getPath(RENDERERS_DIR);//'/themes/default/renderers';
         var viewId = data.__viewId || '';
 
         //There is no viewId
         if (viewId == '') {
-            log.info('Viewless rendering');
+            log.debug('Viewless rendering');
             viewlessTheme(data);
             return;
         }
@@ -244,7 +244,7 @@ var engine = (function () {
 
         }
         else {
-            log.info('Rendering as json since the renderer could not be found or a render method was not specified.');
+            log.debug('Rendering as json since the renderer could not be found or a render method was not specified.');
             print(caramel.build(data));
         }
 
@@ -297,20 +297,20 @@ var engine = (function () {
             handlebars: Handlebars
         };
 
-        log.info('Plugins count: ' + plugins.length);
+        log.debug('Plugins count: ' + plugins.length);
 
-        log.info('Starting processing plugins');
+        log.debug('Starting processing plugins');
 
         //Call the process method of all plugins
         executePluginAction(plugins, 'process', params);
 
-        log.info('Starting output plugins');
-        //log.info(plugins[1]);
+        log.debug('Starting output plugins');
+        //log.debug(plugins[1]);
 
         //Call the output method so that an appropriate plug-in will do the rendering
         executePluginAction(plugins, 'output', params, true);
 
-        log.info('Finished plugin operations');
+        log.debug('Finished plugin operations');
     };
 
     /**
@@ -342,7 +342,7 @@ var engine = (function () {
         var contexts = params.contexts;
         var meta = caramel.meta();
         var check = check || false; //Call the check method of the plug-in before invoking action
-
+        params.meta=meta;
 
         for (var index in plugins) {
            
@@ -352,15 +352,15 @@ var engine = (function () {
 
             //Check if the plugin can be run
             if (check) {
-                log.info('Before use check');
+                log.debug('Before use check');
                 usePlugin = (plugin.check) ? plugin.check(meta.request) : false;
-                log.info('Use plugin check'+usePlugin);
+                log.debug('Use plugin check'+usePlugin);
             }
 
 
             //Call the action provided the action exists and the plugin can be used
             if ((usePlugin) && (plugin[action])) {
-                log.info('Running plugin');
+                log.debug('Running plugin');
                 plugin[action](params);
             }
         }
