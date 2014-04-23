@@ -5,6 +5,9 @@
  */
 var compileResources = {};
 (function() {
+    var PUBLIC_DIR = 'public/';
+    var CSS_DIR = PUBLIC_DIR + 'css/';
+    var JS_DIR = PUBLIC_DIR + 'js/';
     var process = function(context) {
         var page = context.page;
         var contexts = context.contexts;
@@ -16,6 +19,8 @@ var compileResources = {};
         var out;
         var log = new Log();
         log.debug('Compiling resources');
+        meta.js = [];
+        meta.css = [];
         //Go through each property in the contexts object
         for (var area in contexts) {
             log.debug('Gathering resources for area: ' + area);
@@ -29,14 +34,23 @@ var compileResources = {};
                         block = blocks[index].partial || '';
                         helper = getHelper(blocks[index].partial);
                         out = helper.resources(page, meta);
-                        log.debug(stringify(out));
-                        meta.js = out.js || [];
-                        meta.css = out.css || [];
+                        log.info('Adding resources from helper ' + blocks[index].partial);
+                        if (out.js) {
+                            mapToPublicDir(out.js, 'js');
+                            meta.js = Array.concat(meta.js, out.js);
+                        }
+                        if (out.css) {
+                            mapToPublicDir(out.css, 'css');
+                            meta.css = Array.concat(meta.css, out.css);
+                        }
+                        //meta.js = out.js || [];
+                        //meta.css = out.css || [];
                         //To do: Add support for code
                     }
                 }
             }
         }
+        log.info('Meta after adding js ' + stringify(meta));
     };
     var PARTIAL_HELPERS_DIR = 'helpers/';
     var getHelper = function(partialName) {
@@ -54,5 +68,30 @@ var compileResources = {};
     var emptyResource = function() {
         return {};
     };
+    /**
+     * The function maps any resources specified in the helper to the 
+     * public directory
+     * @param  {[type]} resources [description]
+     * @param  {[type]} type      [description]
+     * @return {[type]}           [description]
+     */
+    var mapToPublicDir = function(resources, type) {
+        var element;
+        for (var index in resources) {
+            element = resources[index];
+            switch (type) {
+                case 'js':
+                    element = JS_DIR + element;
+                    break;
+                case 'css':
+                    element = CSS_DIR + element;
+                    break;
+                default:
+                    element = PUBLIC_DIR + element;
+                    break;
+            }
+            resources[index] = element;
+        }
+    }
     compileResources.process = process;
 }());
